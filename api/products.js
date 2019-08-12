@@ -1,4 +1,6 @@
 import express from "express";
+import db from "../db/database";
+import Product from "../domain/Product";
 
 const router = express.Router();
 
@@ -6,16 +8,28 @@ const router = express.Router();
 GET /products
 handles fetch products.
 */
-router.get("/", (req, res, next) => {
-  res.json("Here is the products GET request.");
+router.get("/", (req, res) => {
+  db.query(Product.getAllProductSQL(), (err, products) => {
+    if (!err) {
+      res.status(200).json({
+        products: products
+      });
+    }
+  });
 });
 
 /*
 POST /products
 handles creating a product.
 */
-router.post("/", (req, res, next) => {
-  res.json("Here is the products POST request.");
+router.post("/", (req, res) => {
+  let product = new Product(req.body.prd_name, req.body.prd_price);
+  db.query(product.getAddProductSQL(), (err, product) => {
+    res.status(201).json({
+      message: "Product successfully added.",
+      productId: product.insertId
+    });
+  });
 });
 
 /*

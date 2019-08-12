@@ -1,14 +1,18 @@
 import express from "express";
 import bodyparser from "body-parser";
+import cors from "cors";
 
 import products from "./api/products";
 
 // Create express app.
 const app = express();
 
+// Enable CORS
+app.use(cors());
+
 // Parse data into JSON format.
 app.use(bodyparser.json());
-// app.use(bodyparser.urlencoded({extended:false}));
+app.use(bodyparser.urlencoded({extended:false}));
 
 // Add api routes.
 app.use("/products", products);

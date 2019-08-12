@@ -1,15 +1,15 @@
 import mysql from "mysql";
 
-const pool = mysql.createPool({
+const con = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "123456",
   database: "products",
-  debug: false
+  debug: true
 });
 
 function executeQuery(sql, callback) {
-  pool.getConnection((err, connection) => {
+  con.getConnection((err, connection) => {
     if (err) {
       return callback(err, null);
     } else {
